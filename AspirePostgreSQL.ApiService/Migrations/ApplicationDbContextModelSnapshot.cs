@@ -34,7 +34,7 @@ namespace AspirePostgreSQL.ApiService.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("CreatedOnUtc")
+                    b.Property<DateTime?>("CreatedOnUtc")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("PublishedOnUtc")

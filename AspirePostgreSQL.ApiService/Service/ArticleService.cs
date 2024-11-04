@@ -36,7 +36,8 @@ namespace AspirePostgreSQL.ApiService.Service
 
         public async Task<bool> UpdateAsync(Article updatedArticle)
         {
-            var existingArticle = await _context.Articles.FindAsync(updatedArticle.Id);
+            Article? existingArticle = new Article();
+            existingArticle = await _context.Articles.FindAsync(updatedArticle.Id);
             if (existingArticle == null)
             {
                 return false;

@@ -1,4 +1,4 @@
-﻿namespace AspirePostgreSQL.Entities;
+﻿namespace AspirePostgreSQL.Web.Models;
 
 public class Article
 {

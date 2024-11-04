@@ -45,6 +45,7 @@ namespace AspirePostgreSQL.ApiService.Service
             existingArticle.Title = updatedArticle.Title;
             existingArticle.Content = updatedArticle.Content;
             existingArticle.Tags = updatedArticle.Tags;
+            existingArticle.CreatedOnUtc = updatedArticle.CreatedOnUtc;
             existingArticle.PublishedOnUtc = updatedArticle.PublishedOnUtc;
 
             await _context.SaveChangesAsync();

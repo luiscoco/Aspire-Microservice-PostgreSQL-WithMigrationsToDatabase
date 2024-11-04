@@ -1,0 +1,42 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspirePostgreSQL.AppHost", "AspirePostgreSQL.AppHost\AspirePostgreSQL.AppHost.csproj", "{9A0E7B54-6442-4D6F-A5CD-3B2D20A6B6F2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspirePostgreSQL.ServiceDefaults", "AspirePostgreSQL.ServiceDefaults\AspirePostgreSQL.ServiceDefaults.csproj", "{AE8831F1-A88B-45D0-9309-752E1BB28575}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspirePostgreSQL.ApiService", "AspirePostgreSQL.ApiService\AspirePostgreSQL.ApiService.csproj", "{1975D8D1-0769-4344-9D90-638B16A2634A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspirePostgreSQL.Web", "AspirePostgreSQL.Web\AspirePostgreSQL.Web.csproj", "{7BA3E63A-E8B4-4E44-85E7-8FA7483C289E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9A0E7B54-6442-4D6F-A5CD-3B2D20A6B6F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A0E7B54-6442-4D6F-A5CD-3B2D20A6B6F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A0E7B54-6442-4D6F-A5CD-3B2D20A6B6F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A0E7B54-6442-4D6F-A5CD-3B2D20A6B6F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE8831F1-A88B-45D0-9309-752E1BB28575}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE8831F1-A88B-45D0-9309-752E1BB28575}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE8831F1-A88B-45D0-9309-752E1BB28575}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE8831F1-A88B-45D0-9309-752E1BB28575}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1975D8D1-0769-4344-9D90-638B16A2634A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1975D8D1-0769-4344-9D90-638B16A2634A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1975D8D1-0769-4344-9D90-638B16A2634A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1975D8D1-0769-4344-9D90-638B16A2634A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BA3E63A-E8B4-4E44-85E7-8FA7483C289E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BA3E63A-E8B4-4E44-85E7-8FA7483C289E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BA3E63A-E8B4-4E44-85E7-8FA7483C289E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BA3E63A-E8B4-4E44-85E7-8FA7483C289E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BEF83FCF-6DBE-40D1-90B7-4CDA4FB6AF73}
+	EndGlobalSection
+EndGlobal

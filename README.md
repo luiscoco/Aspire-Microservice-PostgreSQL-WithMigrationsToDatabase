@@ -1,6 +1,6 @@
-# How to create with Aspire .NET9 Blazor WebAssambly application consuming a MicroService CRUD PostgreSQL
+# How to create with Aspire .NET9 a MicroService with PostgreSQL
 
-## 1. 
+## 1. Create 
 
 ## 2. 
 

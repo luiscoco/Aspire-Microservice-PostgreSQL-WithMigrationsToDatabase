@@ -101,7 +101,33 @@ We add the secrets in the **secrets.json** file
 }
 ```
 
-## 5. 
+## 5. Load the Nuget packages (AspirePostgreSQL.ApiService)
+
+These packages together allow the project to use Entity Framework Core for database access (specifically PostgreSQL) and provide Swagger-based API documentation
+
+![image](https://github.com/user-attachments/assets/eb91cd58-69e0-42b0-9772-a9f8119e3b9f)
+
+**Microsoft.EntityFrameworkCore (9.0.0-rc.2.24474.1)**: This is the core package for Entity Framework Core, which is an Object-Relational Mapping (ORM) framework for .NET
+
+It allows developers to work with databases using .NET objects and LINQ queries instead of raw SQL
+
+The version here is a release candidate (rc), meaning it's close to stable but not fully released
+
+**Microsoft.EntityFrameworkCore.Tools (9.0.0-rc.2.24474.1)**: This package provides tools for Entity Framework Core, enabling features like migrations, model scaffolding, and database updates via the command line
+
+It’s essential for managing schema changes in a database through code
+
+**Npgsql.EntityFrameworkCore.PostgreSQL (9.0.0-rc.2)**: This package is the PostgreSQL provider for Entity Framework Core
+
+It allows EF Core to connect to PostgreSQL databases specifically, translating LINQ queries into PostgreSQL-compatible SQL
+
+This package is needed if the project uses PostgreSQL as its database
+
+**Swashbuckle.AspNetCore (6.9.0)**: Swashbuckle is a library that integrates Swagger with ASP.NET Core applications
+
+It generates Swagger documentation for APIs, allowing you to create a user-friendly API documentation and test interface
+
+This package makes it easier to visualize and test APIs directly from a web UI
 
 ## 6. 
 

@@ -20,14 +20,39 @@ We can verify the project folders and files structure
 
 ![image](https://github.com/user-attachments/assets/b1ec8fdd-362f-42af-a64c-4d4ce49e45d1)
 
-## 2. Load the PostgreSQL Nuget package in the AspirePostgreSQL.AppHost project
+## 2. Load the PostgreSQL Nuget package (AspirePostgreSQL.AppHost project)
 
 ![image](https://github.com/user-attachments/assets/9111f764-0ba2-4ffe-a8dd-ac2f22b148a3)
 
+## 3. We modify the middleware(Program.cs) (AspirePostgreSQL.AppHost project)
 
-## 3. 
+```csharp
+var builder = DistributedApplication.CreateBuilder(args);
 
-## 4. 
+var contentplatformdbpassword = builder.AddParameter("contentplatform-db-password");
+var contentplatformdbusername = builder.AddParameter("contentplatform-db-username");
+
+var postgreServer = builder.AddPostgres("contentplatform-db", contentplatformdbusername, contentplatformdbpassword, port: 5432)
+    .WithDataVolume()
+    .WithPgAdmin();
+
+var postgredatabase = postgreServer.AddDatabase("contentplatform");
+
+var apiService = builder.AddProject<Projects.AspirePostgreSQL_ApiService>("apiservice").WithReference(postgredatabase);
+
+builder.AddProject<Projects.AspirePostgreSQL_Web>("webfrontend")
+    .WithReference(postgredatabase)
+    .WithExternalHttpEndpoints()
+    .WithReference(apiService);
+
+builder.Build().Run();
+```
+
+## 4. We manage the PostgreSQL database secrets (AspirePostgreSQL.AppHost project)
+
+We right click on the project name and select the **Manage User secrets...** menu option
+
+![image](https://github.com/user-attachments/assets/83e61803-5d35-437c-bc49-53367975abfe)
 
 ## 5. 
 

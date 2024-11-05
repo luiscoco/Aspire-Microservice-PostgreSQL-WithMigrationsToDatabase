@@ -64,11 +64,9 @@ else
         </div>
         <div class="mb-3">
             <label for="modelCreatedDate" class="form-label">Created Date</label>
-            <!-- Visible field for user input in local time -->
+            <!-- Bind directly to localCreatedDate, which will automatically trigger updates on input changes -->
             <input type="datetime-local" class="form-control" id="modelCreatedDate"
-                   @bind="localCreatedDate" @oninput="UpdateFormattedDate" />
-            <!-- Hidden field to store the formatted UTC date -->
-            <input type="hidden" id="formattedCreatedDate" @bind="currentModel.CreatedDate" />
+                   @bind="localCreatedDate" @bind:event="oninput" />
         </div>
 
         <button class="btn btn-primary" @onclick="SaveModel">Save changes</button>
@@ -144,11 +142,14 @@ else
             return;
         }
 
-        if (!currentModel.CreatedDate.HasValue)
+        if (!localCreatedDate.HasValue)
         {
             message = "Invalid date format. Please enter a valid date.";
             return;
         }
+
+        // Convert localCreatedDate to UTC for currentModel.CreatedDate before saving
+        currentModel.CreatedDate = DateTime.SpecifyKind(localCreatedDate.Value, DateTimeKind.Local).ToUniversalTime();
 
         HttpResponseMessage response;
         try
@@ -179,22 +180,11 @@ else
         }
     }
 
-    // private void UpdateFormattedDate(ChangeEventArgs e)
-    // {
-    //     if (localCreatedDate.HasValue)
-    //     {
-    //         // Convert localCreatedDate to UTC without formatting it as a string
-    //         currentModel.CreatedDate = localCreatedDate.Value
-    //             .ToUniversalTime() // Convert to UTC
-    //             .AddMilliseconds(-localCreatedDate.Value.Millisecond); // Round down milliseconds
-    //     }
-    // }
-
     private void UpdateFormattedDate(ChangeEventArgs e)
     {
         if (localCreatedDate.HasValue)
         {
-            // Ensure conversion to UTC time
+            // Convert localCreatedDate to UTC and store it in currentModel.CreatedDate
             currentModel.CreatedDate = DateTime.SpecifyKind(localCreatedDate.Value, DateTimeKind.Local).ToUniversalTime();
             Console.WriteLine("Updated CreatedDate in UTC: " + currentModel.CreatedDate);
         }

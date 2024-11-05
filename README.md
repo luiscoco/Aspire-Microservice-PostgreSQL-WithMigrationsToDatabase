@@ -910,3 +910,15 @@ else
     }
 }
 ```
+
+## 17. Add a new menu item for accessing the CRUD component (AspirePostgreSQL.Web)
+
+```razor
+ <div class="nav-item px-3">
+     <NavLink class="nav-link" href="examplecomponent">
+         <span class="bi bi-plus-square-fill" aria-hidden="true"></span> ExampleComponent
+     </NavLink>
+ </div>
+```
+
+## 18. Define the middleware (AspirePostgreSQL.Web)

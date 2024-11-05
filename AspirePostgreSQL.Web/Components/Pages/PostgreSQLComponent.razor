@@ -21,6 +21,7 @@ else
                 <tr>
                     <th>Title</th>
                     <th>Content</th>
+                    <th>Created Date</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -30,6 +31,7 @@ else
                     <tr>
                         <td>@model.Title</td>
                         <td>@model.Content</td>
+                        <td>@model.CreatedDate</td>
                         <td>
                             <button class="btn btn-warning btn-sm me-2" @onclick="() => ShowUpdateForm(model)">Update</button>
                             <button class="btn btn-danger btn-sm" @onclick="() => DeleteArticleModel(model.Id)">Delete</button>
@@ -60,6 +62,15 @@ else
             <input type="text" class="form-control" id="modelContent" 
                    @bind="currentModel.Content" />
         </div>
+        <div class="mb-3">
+            <label for="modelCreatedDate" class="form-label">Created Date</label>
+            <!-- Visible field for user input in local time -->
+            <input type="datetime-local" class="form-control" id="modelCreatedDate"
+                   @bind="localCreatedDate" @oninput="UpdateFormattedDate" />
+            <!-- Hidden field to store the formatted UTC date -->
+            <input type="hidden" id="formattedCreatedDate" @bind="currentModel.CreatedDate" />
+        </div>
+
         <button class="btn btn-primary" @onclick="SaveModel">Save changes</button>
         <button class="btn btn-secondary" @onclick="HideForm">Cancel</button>
         <p class="text-danger mt-3">@message</p>
@@ -73,6 +84,9 @@ else
     private bool isFormVisible = false;
     private string modalTitle = "Create New Item";
     public string message = "";
+
+    private DateTime? localCreatedDate;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -89,20 +103,27 @@ else
         modalTitle = "Create New Item";
         isCreateMode = true;
         isFormVisible = true;
+        localCreatedDate = null; // Reset local date
+        currentModel.CreatedDate = null;
         StateHasChanged();
     }
 
+    // ShowUpdateForm example for debugging
     private void ShowUpdateForm(Article model)
     {
         currentModel = new Article
-        {
-            Id = model.Id,
-            Title = model.Title,
-            Content = model.Content
-        };
+            {
+                Id = model.Id,
+                Title = model.Title,
+                Content = model.Content,
+                CreatedDate = model.CreatedDate
+            };
         modalTitle = "Update Item";
         isCreateMode = false;
         isFormVisible = true;
+
+        localCreatedDate = currentModel.CreatedDate?.ToLocalTime();
+        Console.WriteLine("Loaded CreatedDate in Local Time: " + localCreatedDate);
         StateHasChanged();
     }
 
@@ -114,6 +135,8 @@ else
 
     private async Task SaveModel()
     {
+        message = ""; // Clear previous messages
+
         if (string.IsNullOrWhiteSpace(currentModel.Title) ||
             string.IsNullOrWhiteSpace(currentModel.Content))
         {
@@ -121,24 +144,59 @@ else
             return;
         }
 
-        HttpResponseMessage response;
-        if (isCreateMode)
+        if (!currentModel.CreatedDate.HasValue)
         {
-            response = await ArticleModelService.AddArticleModel(currentModel);
-        }
-        else
-        {
-            response = await ArticleModelService.UpdateArticleModel(currentModel.Id, currentModel);
+            message = "Invalid date format. Please enter a valid date.";
+            return;
         }
 
-        if (response.IsSuccessStatusCode)
+        HttpResponseMessage response;
+        try
         {
-            await FetchArticleModels();
-            HideForm();
+            if (isCreateMode)
+            {
+                response = await ArticleModelService.AddArticleModel(currentModel);
+            }
+            else
+            {
+                response = await ArticleModelService.UpdateArticleModel(currentModel.Id, currentModel);
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                await FetchArticleModels();
+                HideForm();
+            }
+            else
+            {
+                message = "Error: " + response.ReasonPhrase;
+            }
         }
-        else
+        catch (Exception ex)
         {
-            message = "Error: " + response.ReasonPhrase;
+            message = "An error occurred: " + ex.Message;
+            Console.WriteLine(ex); // Log the detailed error in the console for backend review
+        }
+    }
+
+    // private void UpdateFormattedDate(ChangeEventArgs e)
+    // {
+    //     if (localCreatedDate.HasValue)
+    //     {
+    //         // Convert localCreatedDate to UTC without formatting it as a string
+    //         currentModel.CreatedDate = localCreatedDate.Value
+    //             .ToUniversalTime() // Convert to UTC
+    //             .AddMilliseconds(-localCreatedDate.Value.Millisecond); // Round down milliseconds
+    //     }
+    // }
+
+    private void UpdateFormattedDate(ChangeEventArgs e)
+    {
+        if (localCreatedDate.HasValue)
+        {
+            // Ensure conversion to UTC time
+            currentModel.CreatedDate = DateTime.SpecifyKind(localCreatedDate.Value, DateTimeKind.Local).ToUniversalTime();
+            Console.WriteLine("Updated CreatedDate in UTC: " + currentModel.CreatedDate);
         }
     }
 

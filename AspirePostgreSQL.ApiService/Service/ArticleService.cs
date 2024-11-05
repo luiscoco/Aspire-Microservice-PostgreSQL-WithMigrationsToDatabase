@@ -27,6 +27,9 @@ namespace AspirePostgreSQL.ApiService.Service
         {
             article.Id = Guid.NewGuid();
 
+            // Default to UTC now if CreatedDate is not provided
+            article.CreatedDate ??= DateTime.UtcNow;
+
             _context.Articles.Add(article);
             await _context.SaveChangesAsync();
 
@@ -35,8 +38,7 @@ namespace AspirePostgreSQL.ApiService.Service
 
         public async Task<bool> UpdateAsync(Article updatedArticle)
         {
-            Article? existingArticle = new Article();
-            existingArticle = await _context.Articles.FindAsync(updatedArticle.Id);
+            var existingArticle = await _context.Articles.FindAsync(updatedArticle.Id);
             if (existingArticle == null)
             {
                 return false;
@@ -44,6 +46,7 @@ namespace AspirePostgreSQL.ApiService.Service
 
             existingArticle.Title = updatedArticle.Title;
             existingArticle.Content = updatedArticle.Content;
+            existingArticle.CreatedDate = updatedArticle.CreatedDate;
 
             await _context.SaveChangesAsync();
 

@@ -41,8 +41,17 @@ namespace AspirePostgreSQL.ApiService.Controllers
                 return BadRequest();
             }
 
-            var createdArticle = await _articleService.CreateAsync(article);
-            return CreatedAtAction(nameof(GetById), new { id = createdArticle.Id }, createdArticle);
+            try
+            {
+                var createdArticle = await _articleService.CreateAsync(article);
+                return CreatedAtAction(nameof(GetById), new { id = createdArticle.Id }, createdArticle);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or write to the console for debugging
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "Internal server error");
+            }
         }
 
         [HttpPut("{id:guid}")]

@@ -129,13 +129,56 @@ It generates Swagger documentation for APIs, allowing you to create a user-frien
 
 This package makes it easier to visualize and test APIs directly from a web UI
 
-## 6. 
+## 6. Add the data model 
 
-## 7.
+![image](https://github.com/user-attachments/assets/5b48e348-76b7-459e-9f48-4b9baef82e09)
 
-## 8.
+```csharp
+namespace AspirePostgreSQL.Entities;
 
-## 9.
+public class Article
+{
+    public Guid Id { get; set; }
+
+    public string Title { get; set; } = string.Empty;
+
+    public string Content { get; set; } = string.Empty;
+
+    public DateTime? CreatedDate { get; set; }
+}
+```
+
+## 7. Add the DbContext
+
+![image](https://github.com/user-attachments/assets/804d9619-3c11-4c0d-9b15-9e66188508f0)
+
+```csharp
+using Microsoft.EntityFrameworkCore;
+using AspirePostgreSQL.Entities;
+
+namespace AspirePostgreSQL.Database;
+
+public class ApplicationDbContext : DbContext
+{
+    public ApplicationDbContext(DbContextOptions options)
+        : base(options)
+    {
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.HasDefaultSchema("content");
+    }
+
+    public DbSet<Article> Articles { get; set; }
+}
+```
+
+## 8. 
+
+
+
+## 9. 
 
 ## 10.
 

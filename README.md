@@ -148,7 +148,7 @@ public class Article
 }
 ```
 
-## 7. Add the DbContext
+## 7. Add the database DbContext
 
 ![image](https://github.com/user-attachments/assets/804d9619-3c11-4c0d-9b15-9e66188508f0)
 
@@ -174,7 +174,7 @@ public class ApplicationDbContext : DbContext
 }
 ```
 
-## 8. Define the Service with database 
+## 8. Define the database CRUD Service 
 
 ![image](https://github.com/user-attachments/assets/afe76a78-0227-45c2-841c-7f795877977c)
 
@@ -251,9 +251,9 @@ namespace AspirePostgreSQL.ApiService.Service
 }
 ```
 
+## 9. Add the Web API Controller
 
 
-## 9. 
 
 ## 10.
 

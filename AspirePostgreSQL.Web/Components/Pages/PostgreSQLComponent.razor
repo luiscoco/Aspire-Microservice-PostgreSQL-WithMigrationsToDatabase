@@ -120,7 +120,7 @@ else
         isCreateMode = false;
         isFormVisible = true;
 
-        localCreatedDate = currentModel.CreatedDate?.ToLocalTime();
+        localCreatedDate = currentModel.CreatedDate?.ToUniversalTime();
         Console.WriteLine("Loaded CreatedDate in Local Time: " + localCreatedDate);
         StateHasChanged();
     }

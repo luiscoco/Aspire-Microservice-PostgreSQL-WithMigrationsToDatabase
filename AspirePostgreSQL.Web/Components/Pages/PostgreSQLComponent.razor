@@ -149,7 +149,7 @@ else
         }
 
         // Convert localCreatedDate to UTC for currentModel.CreatedDate before saving
-        currentModel.CreatedDate = DateTime.SpecifyKind(localCreatedDate.Value, DateTimeKind.Local).ToUniversalTime();
+        currentModel.CreatedDate = DateTime.SpecifyKind(localCreatedDate.Value, DateTimeKind.Utc);
 
         HttpResponseMessage response;
         try
@@ -185,7 +185,7 @@ else
         if (localCreatedDate.HasValue)
         {
             // Convert localCreatedDate to UTC and store it in currentModel.CreatedDate
-            currentModel.CreatedDate = DateTime.SpecifyKind(localCreatedDate.Value, DateTimeKind.Local).ToUniversalTime();
+            currentModel.CreatedDate = DateTime.SpecifyKind(localCreatedDate.Value, DateTimeKind.Utc);
             Console.WriteLine("Updated CreatedDate in UTC: " + currentModel.CreatedDate);
         }
     }

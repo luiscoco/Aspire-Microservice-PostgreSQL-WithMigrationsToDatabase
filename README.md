@@ -129,7 +129,7 @@ It generates Swagger documentation for APIs, allowing you to create a user-frien
 
 This package makes it easier to visualize and test APIs directly from a web UI
 
-## 6. Add the data model 
+## 6. Add the data model (AspirePostgreSQL.ApiService)
 
 ![image](https://github.com/user-attachments/assets/5b48e348-76b7-459e-9f48-4b9baef82e09)
 
@@ -148,7 +148,7 @@ public class Article
 }
 ```
 
-## 7. Add the database DbContext
+## 7. Add the database DbContext (AspirePostgreSQL.ApiService)
 
 ![image](https://github.com/user-attachments/assets/804d9619-3c11-4c0d-9b15-9e66188508f0)
 
@@ -174,7 +174,7 @@ public class ApplicationDbContext : DbContext
 }
 ```
 
-## 8. Define the database CRUD Service 
+## 8. Define the database CRUD Service (AspirePostgreSQL.ApiService)
 
 ![image](https://github.com/user-attachments/assets/afe76a78-0227-45c2-841c-7f795877977c)
 
@@ -251,7 +251,7 @@ namespace AspirePostgreSQL.ApiService.Service
 }
 ```
 
-## 9. Add the Web API Controller
+## 9. Add the Web API Controller (AspirePostgreSQL.ApiService)
 
 ![image](https://github.com/user-attachments/assets/0272ba33-15a4-40aa-aada-613ab54b0be0)
 
@@ -348,7 +348,7 @@ namespace AspirePostgreSQL.ApiService.Controllers
 }
 ```
 
-## 10. Define the middleware(Program.cs)
+## 10. Define the middleware (AspirePostgreSQL.ApiService)
 
 ![image](https://github.com/user-attachments/assets/47978f44-704b-460d-8f62-cddfbca9e716)
 
@@ -419,7 +419,7 @@ app.MapControllers();
 app.Run();
 ```
 
-## 11. Define the database Migration definition
+## 11. Define the database Migration definition (AspirePostgreSQL.ApiService)
 
 ![image](https://github.com/user-attachments/assets/dda847d2-a9d0-4f5d-b544-3d2d17c2322d)
 
@@ -465,7 +465,7 @@ public static class MigrationExtensions
 }
 ```
 
-## 12. Add Migration for creating the database and tables
+## 12. Add Migration for creating the database and tables (AspirePostgreSQL.ApiService)
 
 We first have to set the startup project for creating the migration
 
@@ -600,7 +600,7 @@ namespace AspirePostgreSQL.ApiService.Migrations
 }
 ```
 
-## 13. Define the Database Connection String in the appsettings.json 
+## 13. Define the Database Connection String in the appsettings.json (AspirePostgreSQL.ApiService)
 
 The connection string itself has the following components:
 
@@ -632,5 +632,281 @@ In summary, this connection string allows the application to establish a connect
   "ConnectionStrings": {
     "databaseconnectionstring": "Host=127.0.0.1;Port=5432;Database=contentplatform;Username=postgres;Password=3AfRV)vhP23aj1!!wHU{Hc;Include Error Detail=true"
   }
+}
+```
+
+## 14. Add the Data Model (AspirePostgreSQL.Web)
+
+```csharp
+namespace AspirePostgreSQL.Web.Models;
+
+public class Article
+{
+    public Guid Id { get; set; }
+
+    public string Title { get; set; } = string.Empty;
+
+    public string Content { get; set; } = string.Empty;
+    public DateTime? CreatedDate { get; set; }
+}
+```
+
+## 15. Add CRUD Service (AspirePostgreSQL.Web)
+
+```csharp
+using AspirePostgreSQL.Web.Models;
+
+namespace AspirePostgreSQL.Web.Services
+{
+    public class ArticleModelService
+    {
+        private readonly HttpClient _httpClient;
+
+        public ArticleModelService(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
+
+        // Get all ArticleModels
+        public async Task<List<Article>> GetAllArticleModels()
+        {
+            return await _httpClient.GetFromJsonAsync<List<Article>>("api/Articles");
+        }
+
+        // Get ArticleModel by ID
+        public async Task<Article> GetArticleModelById(Guid id)
+        {
+            return await _httpClient.GetFromJsonAsync<Article>($"api/Articles/{id}");
+        }
+
+        // Add new ArticleModel
+        public async Task<HttpResponseMessage> AddArticleModel(Article model)
+        {
+            return await _httpClient.PostAsJsonAsync("api/Articles", model);
+        }
+
+        // Update ArticleModel
+        public async Task<HttpResponseMessage> UpdateArticleModel(Guid id, Article model)
+        {
+            return await _httpClient.PutAsJsonAsync($"api/Articles/{id}", model);
+        }
+
+        // Delete ArticleModel
+        public async Task<HttpResponseMessage> DeleteArticleModel(Guid id)
+        {
+            return await _httpClient.DeleteAsync($"api/Articles/{id}");
+        }
+    }
+}
+```
+
+## 16. Add the CRUD razor component (AspirePostgreSQL.Web)
+
+```csharp
+@page "/examplecomponent"
+
+@rendermode InteractiveServer
+
+@using AspirePostgreSQL.Web.Services
+@using AspirePostgreSQL.Web.Models
+
+@inject ArticleModelService ArticleModelService
+
+<h3 class="text-center">Example Models</h3>
+
+@if (articleModels == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>Content</th>
+                    <th>Created Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var model in articleModels)
+                {
+                    <tr>
+                        <td>@model.Title</td>
+                        <td>@model.Content</td>
+                        <td>@model.CreatedDate</td>
+                        <td>
+                            <button class="btn btn-warning btn-sm me-2" @onclick="() => ShowUpdateForm(model)">Update</button>
+                            <button class="btn btn-danger btn-sm" @onclick="() => DeleteArticleModel(model.Id)">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<div class="mt-3">
+    <button class="btn btn-primary" @onclick="ShowCreateForm">Create New Item</button>
+    <button class="btn btn-secondary" @onclick="FetchArticleModels">Refresh</button>
+</div>
+
+@if (isFormVisible)
+{
+    <div class="mt-3">
+        <h4>@modalTitle</h4>
+        <div class="mb-3">
+            <label for="modelTitle" class="form-label">Title</label>
+            <input type="text" class="form-control" id="modelTitle" 
+                   @bind="currentModel.Title" />
+        </div>
+        <div class="mb-3">
+            <label for="modelContent" class="form-label">Content</label>
+            <input type="text" class="form-control" id="modelContent" 
+                   @bind="currentModel.Content" />
+        </div>
+        <div class="mb-3">
+            <label for="modelCreatedDate" class="form-label">Created Date</label>
+            <!-- Bind directly to localCreatedDate, which will automatically trigger updates on input changes -->
+            <input type="datetime-local" class="form-control" id="modelCreatedDate"
+                   @bind="localCreatedDate" @bind:event="oninput" />
+        </div>
+
+        <button class="btn btn-primary" @onclick="SaveModel">Save changes</button>
+        <button class="btn btn-secondary" @onclick="HideForm">Cancel</button>
+        <p class="text-danger mt-3">@message</p>
+    </div>
+}
+
+@code {
+    private List<Article> articleModels;
+    private Article currentModel = new Article();
+    private bool isCreateMode = true;
+    private bool isFormVisible = false;
+    private string modalTitle = "Create New Item";
+    public string message = "";
+
+    private DateTime? localCreatedDate;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchArticleModels();
+    }
+
+    private async Task FetchArticleModels()
+    {
+        articleModels = await ArticleModelService.GetAllArticleModels();
+    }
+
+    private void ShowCreateForm()
+    {
+        modalTitle = "Create New Item";
+        isCreateMode = true;
+        isFormVisible = true;
+        localCreatedDate = null; // Reset local date
+        currentModel.CreatedDate = null;
+        StateHasChanged();
+    }
+
+    // ShowUpdateForm example for debugging
+    private void ShowUpdateForm(Article model)
+    {
+        currentModel = new Article
+            {
+                Id = model.Id,
+                Title = model.Title,
+                Content = model.Content,
+                CreatedDate = model.CreatedDate
+            };
+        modalTitle = "Update Item";
+        isCreateMode = false;
+        isFormVisible = true;
+
+        localCreatedDate = currentModel.CreatedDate?.ToUniversalTime();
+        Console.WriteLine("Loaded CreatedDate in Local Time: " + localCreatedDate);
+        StateHasChanged();
+    }
+
+    private void HideForm()
+    {
+        isFormVisible = false;
+        message = "";
+    }
+
+    private async Task SaveModel()
+    {
+        message = ""; // Clear previous messages
+
+        if (string.IsNullOrWhiteSpace(currentModel.Title) ||
+            string.IsNullOrWhiteSpace(currentModel.Content))
+        {
+            message = "Missing required fields.";
+            return;
+        }
+
+        if (!localCreatedDate.HasValue)
+        {
+            message = "Invalid date format. Please enter a valid date.";
+            return;
+        }
+
+        // Convert localCreatedDate to UTC for currentModel.CreatedDate before saving
+        currentModel.CreatedDate = DateTime.SpecifyKind(localCreatedDate.Value, DateTimeKind.Utc);
+
+        HttpResponseMessage response;
+        try
+        {
+            if (isCreateMode)
+            {
+                response = await ArticleModelService.AddArticleModel(currentModel);
+            }
+            else
+            {
+                response = await ArticleModelService.UpdateArticleModel(currentModel.Id, currentModel);
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                await FetchArticleModels();
+                HideForm();
+            }
+            else
+            {
+                message = "Error: " + response.ReasonPhrase;
+            }
+        }
+        catch (Exception ex)
+        {
+            message = "An error occurred: " + ex.Message;
+            Console.WriteLine(ex); // Log the detailed error in the console for backend review
+        }
+    }
+
+    private void UpdateFormattedDate(ChangeEventArgs e)
+    {
+        if (localCreatedDate.HasValue)
+        {
+            // Convert localCreatedDate to UTC and store it in currentModel.CreatedDate
+            currentModel.CreatedDate = DateTime.SpecifyKind(localCreatedDate.Value, DateTimeKind.Utc);
+            Console.WriteLine("Updated CreatedDate in UTC: " + currentModel.CreatedDate);
+        }
+    }
+
+    private async Task DeleteArticleModel(Guid id)
+    {
+        var response = await ArticleModelService.DeleteArticleModel(id);
+
+        if (response.IsSuccessStatusCode)
+        {
+            await FetchArticleModels();
+        }
+        else
+        {
+            message = "Error deleting model: " + response.ReasonPhrase;
+        }
+    }
 }
 ```

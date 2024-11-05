@@ -1,6 +1,6 @@
 # Building a Blazor Web App with a PostgreSQL CRUD Microservice Using Aspire .NET 9
 
-## 1. Create 
+## 1. Create .NET Aspire 9 Starter Application
 
 We run Visual Studio 2022 Community Edition and Create a New Project
 
@@ -18,7 +18,7 @@ We select the .NET 9 framework and press the Create button
 
 We can verify the project folders and files structure
 
-
+![image](https://github.com/user-attachments/assets/b1ec8fdd-362f-42af-a64c-4d4ce49e45d1)
 
 ## 2. 
 

@@ -2,6 +2,24 @@
 
 ## 1. Create 
 
+We run Visual Studio 2022 Community Edition and Create a New Project
+
+We select the **.NET Aspire 9 Starter App** project template
+
+![image](https://github.com/user-attachments/assets/5e31cf38-1f0a-4398-9591-7f8fb1f81e20)
+
+We input the project name and location and press the Next button
+
+![image](https://github.com/user-attachments/assets/d2c4ffec-a540-45fe-a871-13de0ef03e46)
+
+We select the .NET 9 framework and press the Create button
+
+![image](https://github.com/user-attachments/assets/59ddc3c2-0fe0-4f4d-8295-9c6ff617d14e)
+
+We can verify the project folders and files structure
+
+
+
 ## 2. 
 
 ## 3. 

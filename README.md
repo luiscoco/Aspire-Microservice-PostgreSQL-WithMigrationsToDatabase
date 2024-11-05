@@ -50,9 +50,18 @@ builder.Build().Run();
 
 ## 4. We manage the PostgreSQL database secrets (AspirePostgreSQL.AppHost project)
 
-We right click on the project name and select the **Manage User secrets...** menu option
+We right click on the project name and select the **Manage User Secrets...** menu option
 
 ![image](https://github.com/user-attachments/assets/83e61803-5d35-437c-bc49-53367975abfe)
+
+We add the secrets in the **secrets.json** file
+
+```json
+{
+  "Parameters:contentplatform-db-username": "postgres",
+  "Parameters:contentplatform-db-password": "3AfRV)vhP23aj1!!wHU{Hc"
+}
+```
 
 ## 5. 
 

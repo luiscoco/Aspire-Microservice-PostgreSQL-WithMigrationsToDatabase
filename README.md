@@ -255,6 +255,10 @@ namespace AspirePostgreSQL.ApiService.Service
 
 ![image](https://github.com/user-attachments/assets/0272ba33-15a4-40aa-aada-613ab54b0be0)
 
+This code defines a RESTful API controller for managing "articles" in a PostgreSQL database using an ArticleService
+
+It supports basic CRUD operations (Create, Read, Update, Delete) and handles responses and errors appropriately for each operation
+
 ```csharp
 using AspirePostgreSQL.ApiService.Service;
 using AspirePostgreSQL.Entities;

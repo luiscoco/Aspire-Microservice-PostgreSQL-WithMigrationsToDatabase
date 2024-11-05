@@ -344,6 +344,68 @@ namespace AspirePostgreSQL.ApiService.Controllers
 }
 ```
 
+## 10. Define the middleware(Program.cs)
 
-## 10.
+![image](https://github.com/user-attachments/assets/47978f44-704b-460d-8f62-cddfbca9e716)
+
+We define the connection string for accessing the PostgreSQL database:
+
+```csharp
+builder.Services.AddDbContext<ApplicationDbContext>(o =>
+    o.UseNpgsql(builder.Configuration.GetConnectionString("databaseconnectionstring")));
+```
+
+We also register the Service with the CRUD operations
+
+```csharp
+builder.Services.AddScoped<ArticleService>();
+```
+
+We review the middleware(Program.cs):
+
+```csharp
+using AspirePostgreSQL.Database;
+using Microsoft.EntityFrameworkCore;
+using AspirePostgreSQL.Extensions;
+using AspirePostgreSQL.ApiService.Service;
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllers();
+
+// Add service defaults & Aspire components.
+builder.AddServiceDefaults();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(o => o.CustomSchemaIds(id => id.FullName!.Replace('+', '-')));
+builder.Services.AddCors();
+
+builder.Services.AddDbContext<ApplicationDbContext>(o =>
+    o.UseNpgsql(builder.Configuration.GetConnectionString("databaseconnectionstring")));
+
+builder.Services.AddScoped<ArticleService>();
+
+// Add services to the container.
+builder.Services.AddProblemDetails();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+app.UseExceptionHandler();
+
+app.MapDefaultEndpoints();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+    app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+    app.ApplyMigrations();
+}
+
+app.MapControllers();
+
+app.Run();
+```
 

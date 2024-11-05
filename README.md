@@ -26,6 +26,44 @@ We can verify the project folders and files structure
 
 ## 3. We modify the middleware(Program.cs) (AspirePostgreSQL.AppHost project)
 
+We define the database username and password:
+
+```csharp
+var contentplatformdbpassword = builder.AddParameter("contentplatform-db-password");
+var contentplatformdbusername = builder.AddParameter("contentplatform-db-username");
+```
+
+We also register the database server and assign the username, password and port for accesing:
+
+```csharp
+var postgreServer = builder.AddPostgres("contentplatform-db", contentplatformdbusername, contentplatformdbpassword, port: 5432)
+    .WithDataVolume()
+    .WithPgAdmin();
+```
+
+We create the database:
+
+```csharp
+var postgredatabase = postgreServer.AddDatabase("contentplatform");
+```
+
+This code sets up an **API Service project** with a **PostgreSQL database** reference, registering it in the application's builder so that it can be managed and injected into other parts of the application as needed
+
+```csharp
+var apiService = builder.AddProject<Projects.AspirePostgreSQL_ApiService>("apiservice").WithReference(postgredatabase);
+```
+
+This code sets up a **Web Frontend project** that connects to a **PostgreSQL database**, can interact with **external HTTP endpoints**, and relies on an **API Service** (apiService) for additional backend functionality
+
+```csharp
+builder.AddProject<Projects.AspirePostgreSQL_Web>("webfrontend")
+    .WithReference(postgredatabase)
+    .WithExternalHttpEndpoints()
+    .WithReference(apiService);
+```
+
+We review the middleware whole code:
+
 ```csharp
 var builder = DistributedApplication.CreateBuilder(args);
 

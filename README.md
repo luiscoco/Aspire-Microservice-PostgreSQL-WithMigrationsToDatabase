@@ -361,6 +361,12 @@ We also register the Service with the CRUD operations
 builder.Services.AddScoped<ArticleService>();
 ```
 
+We also define the code for the database initial migration
+
+```csharp
+app.ApplyMigrations();
+```
+
 We review the middleware(Program.cs):
 
 ```csharp
@@ -409,3 +415,46 @@ app.MapControllers();
 app.Run();
 ```
 
+## 11. Define the database Migration definition
+
+![image](https://github.com/user-attachments/assets/dda847d2-a9d0-4f5d-b544-3d2d17c2322d)
+
+```csharp
+using AspirePostgreSQL.Database;
+using Microsoft.EntityFrameworkCore;
+
+namespace AspirePostgreSQL.Extensions;
+
+public static class MigrationExtensions
+{
+    public static void ApplyMigrations(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        int retryCount = 5; // Number of times to retry
+        int delayInMilliseconds = 2000; // Delay between retries in milliseconds
+
+        for (int attempt = 0; attempt < retryCount; attempt++)
+        {
+            try
+            {
+                dbContext.Database.Migrate();
+                break; // Exit loop if migration is successful
+            }
+            catch (Npgsql.NpgsqlException ex)
+            {
+                if (attempt == retryCount - 1) // Last attempt, rethrow the exception
+                {
+                    throw;
+                }
+
+                Console.WriteLine($"Migration attempt {attempt + 1} failed: {ex.Message}");
+                Thread.Sleep(delayInMilliseconds); // Wait before retrying
+            }
+        }
+    }
+}
+```
+
+## 12. 

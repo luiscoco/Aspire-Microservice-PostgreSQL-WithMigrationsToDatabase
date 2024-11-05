@@ -421,6 +421,8 @@ app.Run();
 
 This code defines an extension method in C# that applies database migrations for an ASP.NET Core application using Entity Framework Core with a PostgreSQL database.
 
+This method is typically called during application startup to ensure the database schema is up to date with the latest migrations, improving reliability by handling transient connectivity issues automatically
+
 ```csharp
 using AspirePostgreSQL.Database;
 using Microsoft.EntityFrameworkCore;

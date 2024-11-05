@@ -419,6 +419,8 @@ app.Run();
 
 ![image](https://github.com/user-attachments/assets/dda847d2-a9d0-4f5d-b544-3d2d17c2322d)
 
+This code defines an extension method in C# that applies database migrations for an ASP.NET Core application using Entity Framework Core with a PostgreSQL database.
+
 ```csharp
 using AspirePostgreSQL.Database;
 using Microsoft.EntityFrameworkCore;

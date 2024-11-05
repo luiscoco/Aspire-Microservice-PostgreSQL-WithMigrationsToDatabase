@@ -174,7 +174,82 @@ public class ApplicationDbContext : DbContext
 }
 ```
 
-## 8. 
+## 8. Define the Service with database 
+
+![image](https://github.com/user-attachments/assets/afe76a78-0227-45c2-841c-7f795877977c)
+
+```csharp
+using AspirePostgreSQL.Database;
+using AspirePostgreSQL.Entities;
+using Microsoft.EntityFrameworkCore;
+
+namespace AspirePostgreSQL.ApiService.Service
+{
+    public class ArticleService
+    {
+        private readonly ApplicationDbContext _context;
+
+        public ArticleService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<List<Article>> GetAllAsync()
+        {
+            return await _context.Articles.ToListAsync();
+        }
+
+        public async Task<Article?> GetByIdAsync(Guid id)
+        {
+            return await _context.Articles.FindAsync(id);
+        }
+
+        public async Task<Article> CreateAsync(Article article)
+        {
+            article.Id = Guid.NewGuid();
+
+            // Default to UTC now if CreatedDate is not provided
+            article.CreatedDate ??= DateTime.UtcNow;
+
+            _context.Articles.Add(article);
+            await _context.SaveChangesAsync();
+
+            return article;
+        }
+
+        public async Task<bool> UpdateAsync(Article updatedArticle)
+        {
+            var existingArticle = await _context.Articles.FindAsync(updatedArticle.Id);
+            if (existingArticle == null)
+            {
+                return false;
+            }
+
+            existingArticle.Title = updatedArticle.Title;
+            existingArticle.Content = updatedArticle.Content;
+            existingArticle.CreatedDate = updatedArticle.CreatedDate;
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> DeleteAsync(Guid id)
+        {
+            var article = await _context.Articles.FindAsync(id);
+            if (article == null)
+            {
+                return false;
+            }
+
+            _context.Articles.Remove(article);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+    }
+}
+```
 
 
 

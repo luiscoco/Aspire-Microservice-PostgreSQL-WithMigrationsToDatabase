@@ -600,6 +600,37 @@ namespace AspirePostgreSQL.ApiService.Migrations
 }
 ```
 
+## 13. Define the Database Connection String in the appsettings.json 
 
+The connection string itself has the following components:
 
+**Host=127.0.0.1**: Specifies the IP address of the database server
 
+Here, 127.0.0.1 is the localhost, meaning the database is hosted on the same machine as the application.
+
+**Port=5432**: The port on which PostgreSQL is running, which is 5432 by default
+
+**Database=contentplatform**: The name of the database being connected to, here called contentplatform
+
+**Username=postgres**: The username for the database, postgres is often the default admin user for PostgreSQL
+
+**Password=3AfRV)vhP23aj1!!wHU{Hc**: The password for the specified username
+
+Include Error Detail=true: A setting to include detailed error information in responses, useful for debugging
+
+In summary, this connection string allows the application to establish a connection to a PostgreSQL database with specified credentials, database name, and error reporting settings
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "databaseconnectionstring": "Host=127.0.0.1;Port=5432;Database=contentplatform;Username=postgres;Password=3AfRV)vhP23aj1!!wHU{Hc;Include Error Detail=true"
+  }
+}
+```

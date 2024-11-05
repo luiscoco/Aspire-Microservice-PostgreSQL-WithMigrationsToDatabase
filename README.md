@@ -993,3 +993,34 @@ app.Run();
 
 ## 19. Run the application an verify the results
 
+For running the application we first have to select the Aspire Host project as the StartUp
+
+![image](https://github.com/user-attachments/assets/834a5072-15a5-4947-b2a8-7bdea24c9b96)
+
+Then we run the application and automatically navigate to the Dashboard webpage
+
+We should wait for some minutes until all the container are properly running
+
+https://localhost:17045/
+
+![image](https://github.com/user-attachments/assets/d0284920-776f-461f-9120-1430971678ec)
+
+Now we can visit the Web API 
+
+https://localhost:7441/swagger/index.html
+
+![image](https://github.com/user-attachments/assets/6a03253f-e12a-49b2-adaa-9b629e39c374)
+
+![image](https://github.com/user-attachments/assets/e6ac964d-a5b2-46b9-8f98-38749777e5ab)
+
+We can also navigate to the Front-End 
+
+https://localhost:7228/
+
+![image](https://github.com/user-attachments/assets/d4d3fbb4-ff85-41ae-a842-999da22f2d5e)
+
+![image](https://github.com/user-attachments/assets/5039454e-fb13-49cd-a2b1-0e17a1d158a7)
+
+![image](https://github.com/user-attachments/assets/f24d7159-1586-46ee-8053-22832f609b30)
+
+

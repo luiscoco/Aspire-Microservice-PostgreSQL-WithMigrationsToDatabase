@@ -21,9 +21,6 @@ else
                 <tr>
                     <th>Title</th>
                     <th>Content</th>
-                    <th>Tags</th>
-                    <th>Created On (UTC)</th>
-                    <th>Published On (UTC)</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -33,9 +30,6 @@ else
                     <tr>
                         <td>@model.Title</td>
                         <td>@model.Content</td>
-                        <td>@string.Join(", ", model.Tags)</td>
-                        <td>@(model.CreatedOnUtc?.ToString("g"))</td>
-                        <td>@(model.PublishedOnUtc?.ToString("g") ?? "Not Published")</td>
                         <td>
                             <button class="btn btn-warning btn-sm me-2" @onclick="() => ShowUpdateForm(model)">Update</button>
                             <button class="btn btn-danger btn-sm" @onclick="() => DeleteArticleModel(model.Id)">Delete</button>
@@ -66,21 +60,6 @@ else
             <input type="text" class="form-control" id="modelContent" 
                    @bind="currentModel.Content" />
         </div>
-        <div class="mb-3">
-            <label for="modelTags" class="form-label">Tags (comma-separated)</label>
-            <input type="text" class="form-control" id="modelTags" 
-                   @bind="@tagsInput" />
-        </div>
-        <div class="mb-3">
-            <label for="modelCreatedOnUtc" class="form-label">Created On (UTC)</label>
-            <input type="datetime-local" class="form-control" id="modelCreatedOnUtc"
-                   @bind="currentModel.CreatedOnUtc" />
-        </div>
-        <div class="mb-3">
-            <label for="modelPublishedOnUtc" class="form-label">Published On (UTC)</label>
-            <input type="datetime-local" class="form-control" id="modelPublishedOnUtc"
-                   @bind="currentModel.PublishedOnUtc" />
-        </div>
         <button class="btn btn-primary" @onclick="SaveModel">Save changes</button>
         <button class="btn btn-secondary" @onclick="HideForm">Cancel</button>
         <p class="text-danger mt-3">@message</p>
@@ -94,7 +73,6 @@ else
     private bool isFormVisible = false;
     private string modalTitle = "Create New Item";
     public string message = "";
-    private string tagsInput = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -108,11 +86,6 @@ else
 
     private void ShowCreateForm()
     {
-        currentModel = new Article
-        {
-            CreatedOnUtc = DateTime.Now
-        };
-        tagsInput = ""; // Clear tags input for new entry
         modalTitle = "Create New Item";
         isCreateMode = true;
         isFormVisible = true;
@@ -125,19 +98,13 @@ else
         {
             Id = model.Id,
             Title = model.Title,
-            Content = model.Content,
-            Tags = model.Tags,
-            CreatedOnUtc = model.CreatedOnUtc,
-            PublishedOnUtc = model.PublishedOnUtc
+            Content = model.Content
         };
-        tagsInput = string.Join(", ", model.Tags);
         modalTitle = "Update Item";
         isCreateMode = false;
         isFormVisible = true;
         StateHasChanged();
     }
-
-
 
     private void HideForm()
     {
@@ -147,8 +114,6 @@ else
 
     private async Task SaveModel()
     {
-        currentModel.Tags = tagsInput.Split(',').Select(tag => tag.Trim()).ToList();
-
         if (string.IsNullOrWhiteSpace(currentModel.Title) ||
             string.IsNullOrWhiteSpace(currentModel.Content))
         {

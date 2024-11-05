@@ -26,7 +26,6 @@ namespace AspirePostgreSQL.ApiService.Service
         public async Task<Article> CreateAsync(Article article)
         {
             article.Id = Guid.NewGuid();
-            article.CreatedOnUtc = DateTime.UtcNow;
 
             _context.Articles.Add(article);
             await _context.SaveChangesAsync();
@@ -45,9 +44,6 @@ namespace AspirePostgreSQL.ApiService.Service
 
             existingArticle.Title = updatedArticle.Title;
             existingArticle.Content = updatedArticle.Content;
-            existingArticle.Tags = updatedArticle.Tags;
-            existingArticle.CreatedOnUtc = updatedArticle.CreatedOnUtc;
-            existingArticle.PublishedOnUtc = updatedArticle.PublishedOnUtc;
 
             await _context.SaveChangesAsync();
 

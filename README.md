@@ -923,6 +923,31 @@ else
 
 ## 18. Define the middleware (AspirePostgreSQL.Web)
 
+We would like to highlight these code:
+
+```csharp
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7441/") });
+builder.Services.AddScoped<ArticleModelService>();
+```
+
+**builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7441/") });**
+
+AddScoped registers the service so that each request or scope (e.g., HTTP request in a web app) gets its own instance of the service
+
+Here, a new HttpClient instance is created with a base address of https://localhost:7441/.
+
+This setup means any time HttpClient is requested from the dependency injection container, it will have this base address, making it easier to perform API requests to this specific server
+
+**builder.Services.AddScoped<ArticleModelService>();**
+
+This line registers the ArticleModelService as a scoped service
+
+It tells the dependency injection container to provide a new instance of ArticleModelService for each request or scope
+
+This is useful for services that might handle data specific to the current request
+
+We can review the whole Program.cs code:
+
 ```csharp
 using AspirePostgreSQL.Web;
 using AspirePostgreSQL.Web.Components;

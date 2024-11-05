@@ -20,7 +20,9 @@ We can verify the project folders and files structure
 
 ![image](https://github.com/user-attachments/assets/b1ec8fdd-362f-42af-a64c-4d4ce49e45d1)
 
-## 2. 
+## 2. Load the Nugets dependencies in the AspirePostgreSQL.AppHost project
+
+![image](https://github.com/user-attachments/assets/290c2fa8-63fb-4539-a51d-86df61a07c57)
 
 ## 3. 
 
